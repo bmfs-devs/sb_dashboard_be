@@ -1,0 +1,19 @@
+package constants
+
+// on 0xF1F0008008 7211C210CF5AAA
+// off 0xC1F0008008  7221C210CF5AAA
+var (
+	Topics = map[string][]int{
+		"ac_topic": {1, 2, 3},
+	}
+	OnHex = map[int]string{
+		1: "AA5ACF10C1117200088000F0B1",
+		2: "AA5ACF10C1117200088000F0B1",
+		3: "AA5ACF10C1117200088000F0B1",
+	}
+	OffHex = map[int]string{
+		1: "AA5ACF10C1217200088000F081",
+		2: "AA5ACF10C1217200088000F081",
+		3: "AA5ACF10C1217200088000F081",
+	}
+)
