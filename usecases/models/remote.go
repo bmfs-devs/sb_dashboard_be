@@ -1,5 +1,7 @@
 package models
 
+import "context"
+
 type ACStatus struct {
 	ACNumber    int `json:"ac_number"`   // AC number
 	Status      int `json:"status"`      // 0 for off, 1 for on
@@ -7,7 +9,8 @@ type ACStatus struct {
 }
 
 type ACRemoteRequest struct {
-	ACStatuses []ACStatus `json:"ac_statuses"` // List of AC statuses to control
+	Ctx        context.Context `json:"-"`           // Context for request handling, not included in JSON
+	ACStatuses []ACStatus      `json:"ac_statuses"` // List of AC statuses to control
 }
 
 type ACRemoteResponse struct {

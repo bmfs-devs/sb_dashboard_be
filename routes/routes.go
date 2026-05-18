@@ -14,6 +14,7 @@ func InitFiber() {
 	})
 	remote := app.Group("/remote")
 	remote.Post("/on-off", handlers.OnOffHandler)
+	remote.Post("/set-temperature", handlers.SetTemperatureHandler)
 	app.Get("/hello", handlers.HelloWorldHandler)
 	app.Listen(":8080")
 }

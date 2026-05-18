@@ -24,3 +24,7 @@ func GetFormatHex(acNumber int, mapHex map[int]string) string {
 	}
 	return ""
 }
+
+func RedisKeyACTemperature() string {
+	return "ac_temperatures"
+}

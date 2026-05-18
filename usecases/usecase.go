@@ -9,15 +9,18 @@ import (
 type Usecase struct {
 	HelloWorldRepo domainInterfaces.HelloWorldRepository
 	HiveRepo       domainInterfaces.HiveRepository
+	RedisRepo      domainInterfaces.RedisRepository
 }
 
 func NewUsecase(
 	HelloWorldRepo domainInterfaces.HelloWorldRepository,
 	HiveRepo domainInterfaces.HiveRepository,
+	RedisRepo domainInterfaces.RedisRepository,
 ) *Usecase {
 	return &Usecase{
 		HelloWorldRepo: HelloWorldRepo,
 		HiveRepo:       HiveRepo,
+		RedisRepo:      RedisRepo,
 	}
 }
 

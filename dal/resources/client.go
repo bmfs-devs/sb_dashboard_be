@@ -26,6 +26,7 @@ var (
 func InitNewRepo() {
 	InitHelloWorldRepository()
 	InitHiveRepository()
+	InitRedisRepository()
 }
 
 func InitHelloWorldRepository() {
@@ -42,5 +43,5 @@ func InitRedisRepository() {
 
 // Init All Usecase
 func InitNewUsecase() {
-	Usecase = usecases.NewUsecase(HelloWorldRepository, HiveRepository)
+	Usecase = usecases.NewUsecase(HelloWorldRepository, HiveRepository, RedisRepository)
 }
