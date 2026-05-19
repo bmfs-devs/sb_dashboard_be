@@ -85,3 +85,11 @@ func (r *Repository) HGet(params mRedis.RedisMessageHGetRequest) (string, error)
 func (r *Repository) HDel(params mRedis.RedisMessageHGetRequest) error {
 	return r.Client.HDel(params.Ctx, params.Key, params.Field).Err()
 }
+
+func (r *Repository) HGetAll(params mRedis.RedisMessageHGetRequest) (map[string]string, error) {
+	res, err := r.Client.HGetAll(params.Ctx, params.Key).Result()
+	if err != nil {
+		return nil, fmt.Errorf("redis error: %w", err)
+	}
+	return res, nil
+}

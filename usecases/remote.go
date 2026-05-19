@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"strconv"
 
 	"github.com/bmfs-devs/sb_dashboard_be/constants"
 	mHive "github.com/bmfs-devs/sb_dashboard_be/repositories/queue/hive/models"
@@ -198,4 +199,100 @@ func (u *Usecase) SetTemperature(params mUsecaseRemote.ACRemoteRequest) (mUsecas
 	}
 
 	return res, nil
+}
+
+func (u *Usecase) GetTemperature(params mUsecaseRemote.GetTemperatureRequest) (mUsecaseRemote.ACRemoteResponse, error) {
+	resp := mUsecaseRemote.ACRemoteResponse{}
+	if params.ACNumber != "" {
+		res, err := u.GetTemperatureOneAC(params)
+		if err != nil {
+			return mUsecaseRemote.ACRemoteResponse{}, fmt.Errorf("failed to get temperature for AC number %s: %v", params.ACNumber, err)
+		}
+		resp.ACStatuses = append(resp.ACStatuses, res)
+		return resp, nil
+	}
+
+	res, err := u.GetAllTemperatures(params)
+	if err != nil {
+		return mUsecaseRemote.ACRemoteResponse{}, fmt.Errorf("failed to get temperatures for all ACs: %v", err)
+	}
+	resp.ACStatuses = append(resp.ACStatuses, res...)
+	return resp, nil
+}
+
+func (u *Usecase) GetTemperatureOneAC(params mUsecaseRemote.GetTemperatureRequest) (mUsecaseRemote.ACStatus, error) {
+	acNumber, err := strconv.Atoi(params.ACNumber)
+	if err != nil {
+		return mUsecaseRemote.ACStatus{}, fmt.Errorf("invalid AC number %s: %v", params.ACNumber, err)
+	}
+	if acNumber < 1 || acNumber > len(constants.OnHex) {
+		return mUsecaseRemote.ACStatus{}, fmt.Errorf("AC number %d is out of valid range", acNumber)
+	}
+
+	temperature, err := u.RedisRepo.HGet(mRedis.RedisMessageHGetRequest{
+		Ctx:   params.Ctx,
+		Key:   utils.RedisKeyACTemperature(),
+		Field: params.ACNumber,
+	})
+	if err != nil {
+		return mUsecaseRemote.ACStatus{}, fmt.Errorf("failed to get temperature for AC number %s: %v", params.ACNumber, err)
+	}
+	if temperature == "" {
+		return mUsecaseRemote.ACStatus{
+			ACNumber:    acNumber,
+			Status:      0, // Assuming the AC is OFF if there's no temperature set
+			Temperature: 0,
+		}, nil
+	}
+
+	temperatureInt, err := strconv.Atoi(temperature)
+	if err != nil {
+		return mUsecaseRemote.ACStatus{}, fmt.Errorf("invalid temperature value for AC number %s: %v", params.ACNumber, err)
+	}
+	return mUsecaseRemote.ACStatus{
+		ACNumber:    acNumber,
+		Status:      1, // Assuming the AC is ON if there's a temperature set
+		Temperature: temperatureInt,
+	}, nil
+}
+
+func (u *Usecase) GetAllTemperatures(params mUsecaseRemote.GetTemperatureRequest) ([]mUsecaseRemote.ACStatus, error) {
+	temperatureMap, err := u.RedisRepo.HGetAll(mRedis.RedisMessageHGetRequest{
+		Ctx:   params.Ctx,
+		Key:   utils.RedisKeyACTemperature(),
+		Field: "",
+	})
+	if err != nil {
+		return nil, fmt.Errorf("failed to get temperatures for all ACs: %v", err)
+	}
+
+	acStasuses := make([]mUsecaseRemote.ACStatus, len(constants.OnHex))
+	for i, _ := range acStasuses {
+		acNumber := i + 1
+		temperatureStr, exists := temperatureMap[fmt.Sprintf("%d", acNumber)]
+		if !exists {
+			acStasuses[i] = mUsecaseRemote.ACStatus{
+				ACNumber:    acNumber,
+				Status:      0, // Assuming the AC is OFF if there's no temperature set
+				Temperature: 0,
+			}
+			continue
+		}
+		temperatureInt, err := strconv.Atoi(temperatureStr)
+		if err != nil {
+			log.Printf("Invalid temperature value for AC number %d: %v", acNumber, err)
+			acStasuses[i] = mUsecaseRemote.ACStatus{
+				ACNumber:    acNumber,
+				Status:      0, // Assuming the AC is OFF if there's an invalid temperature value
+				Temperature: 0,
+			}
+			continue
+		}
+		acStasuses[i] = mUsecaseRemote.ACStatus{
+			ACNumber:    acNumber,
+			Status:      1, // Assuming the AC is ON if there's a temperature set
+			Temperature: temperatureInt,
+		}
+	}
+	return acStasuses, nil
 }

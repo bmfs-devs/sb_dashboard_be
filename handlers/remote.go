@@ -114,3 +114,25 @@ func SetTemperatureHandler(c *fiber.Ctx) error {
 		Data:         response,
 	})
 }
+
+func GetTemperatureHandler(c *fiber.Ctx) error {
+
+	acNumberParam := c.Query("ac_number")
+
+	resp, err := resource.Usecase.GetTemperature(mUsecase.GetTemperatureRequest{
+		Ctx:      c.Context(),
+		ACNumber: acNumberParam,
+	})
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(models.ResponseGeneral{
+			Status:       500,
+			ErrorMessage: err.Error(),
+			Data:         nil,
+		})
+	}
+	return c.Status(fiber.StatusOK).JSON(models.ResponseGeneral{
+		Status:       200,
+		ErrorMessage: "",
+		Data:         resp,
+	})
+}

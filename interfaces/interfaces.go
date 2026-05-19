@@ -11,6 +11,7 @@ type Usecase interface {
 	GetHelloWorld(params mUsecase.HelloWorldUsecaseRequest) mUsecase.HelloWorldUsecaseResponse
 	OnOffAC(params mUsecase.ACRemoteRequest) (mUsecase.ACRemoteResponse, error)
 	SetTemperature(params mUsecase.ACRemoteRequest) (mUsecase.ACRemoteResponse, error)
+	GetTemperature(params mUsecase.GetTemperatureRequest) (mUsecase.ACRemoteResponse, error)
 }
 
 type HelloWorldRepository interface {
@@ -24,6 +25,7 @@ type RedisRepository interface {
 	HSet(params mRedis.RedisMessageHSetRequest) error
 	HGet(params mRedis.RedisMessageHGetRequest) (string, error)
 	HDel(params mRedis.RedisMessageHGetRequest) error
+	HGetAll(params mRedis.RedisMessageHGetRequest) (map[string]string, error)
 }
 
 type HiveRepository interface {

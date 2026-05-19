@@ -16,3 +16,8 @@ type ACRemoteRequest struct {
 type ACRemoteResponse struct {
 	ACStatuses []ACStatus `json:"ac_statuses"` // List of AC statuses after processing the request
 }
+
+type GetTemperatureRequest struct {
+	Ctx      context.Context `json:"-"`         // Context for request handling, not included in JSON
+	ACNumber string          `json:"ac_number"` // AC number to get the temperature for
+}
