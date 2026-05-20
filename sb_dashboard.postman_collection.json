@@ -1,0 +1,107 @@
+{
+	"info": {
+		"_postman_id": "97273c07-fd6d-41af-95e4-63ac87602472",
+		"name": "sb_dashboard",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Remote",
+			"item": [
+				{
+					"name": "On Off Remote",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"ac_statuses\": [\r\n        {\r\n            \"ac_number\":2,\r\n            \"status\":1\r\n        },\r\n        {\r\n            \"ac_number\":1,\r\n            \"status\":1\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/remote/on-off",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"remote",
+								"on-off"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Set Temperature",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"ac_temperatures\": [\r\n        {\r\n            \"ac_number\":1,\r\n            \"temperature\": 20\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/remote/temperature",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"remote",
+								"temperature"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Temperature",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"ac_temperatures\": [\r\n        {\r\n            \"ac_number\":1,\r\n            \"temperature\": 20\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/remote/temperature?ac_number=",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"remote",
+								"temperature"
+							],
+							"query": [
+								{
+									"key": "ac_number",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
