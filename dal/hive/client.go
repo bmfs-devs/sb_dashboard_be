@@ -3,6 +3,7 @@ package hive
 import (
 	"crypto/tls"
 	"log"
+
 	"os"
 
 	mqtt "github.com/eclipse/paho.mqtt.golang"
@@ -33,5 +34,5 @@ func InitHiveMQ() {
 	}
 
 	MQTTClient = client
-	log.Println("Successfully connected to HiveMQ Cloud!")
+	log.Println("Successfully connected to HiveMQ Cloud! Port 8883")
 }
