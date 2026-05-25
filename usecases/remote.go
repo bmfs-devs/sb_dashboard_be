@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"strconv"
+	"time"
 
 	"github.com/bmfs-devs/sb_dashboard_be/constants"
 	mHive "github.com/bmfs-devs/sb_dashboard_be/repositories/queue/hive/models"
@@ -37,7 +38,7 @@ func (u *Usecase) OnOffAC(params mUsecaseRemote.ACRemoteRequest) (mUsecaseRemote
 		}
 
 		var mapHex map[int]string
-		switch acStatus.ACNumber {
+		switch acStatus.Status {
 		case 1:
 			mapHex = constants.OnHex
 		case 0:
@@ -61,6 +62,8 @@ func (u *Usecase) OnOffAC(params mUsecaseRemote.ACRemoteRequest) (mUsecaseRemote
 			})
 			continue
 		}
+
+		time.Sleep(500 * time.Millisecond)
 
 		// Publish the default temperature hex code to the Hive repository
 		tempHexCode := utils.GetFormatHex(acStatus.ACNumber, constants.Temperature24)
