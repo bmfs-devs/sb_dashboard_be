@@ -63,7 +63,7 @@ func (u *Usecase) OnOffAC(params mUsecaseRemote.ACRemoteRequest) (mUsecaseRemote
 			continue
 		}
 
-		time.Sleep(500 * time.Millisecond)
+		time.Sleep(50 * time.Millisecond)
 
 		// Publish the default temperature hex code to the Hive repository
 		tempHexCode := utils.GetFormatHex(acStatus.ACNumber, constants.Temperature24)
