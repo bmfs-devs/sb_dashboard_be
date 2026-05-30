@@ -135,9 +135,11 @@ void setup() {
     setup_wifi();
     client.setServer(mqtt_server, mqtt_port);
     client.setCallback(callback);
+    setupSensor(); 
 }
 
 void loop() {
     if (!client.connected()) reconnect();
     client.loop();
+    publishSensorData();
 }
