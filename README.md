@@ -15,9 +15,14 @@
 - Run command `go run app/http/http.go`
 
 ### Hardware
-#### Transmitter and Receiver
+#### AC Transmitter and Sensor
 - Connect ESP32 to PC/Laptop
-- Flash the firmware to ESP32 (`mqtt.ino` and `receiver.ino`)
+- Flash the firmware to ESP32 (`mqtt.ino`)
+- Automatic compiled with the other files (`acTransmitter.ino` and `dhtSensor.ino`)
+#### AC Infrared Receiver
+- Connect ESP32 to PC/Laptop
+- Flash the firmware to ESP32 (`receiver.ino`)
+- Writedown the Hex output to be used later in the constant.go
 
 ### Documentation
 - Import `sb_dashboard.postman_collection.json` to Postman

@@ -4,7 +4,8 @@ package constants
 // off 0xC1F0008008  7221C210CF5AAA
 var (
 	Topics = map[string][]int{
-		"ac_topic": {1, 2, 3},
+		"ac_topic":     {1, 2, 3},
+		"sensor_topic": {},
 	}
 	OnHex = map[int]string{
 		1: "AA5ACF10C1117200088000F0B1",
